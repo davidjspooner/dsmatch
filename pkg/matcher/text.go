@@ -1,6 +1,9 @@
-package match
+package matcher
 
-import "bytes"
+import (
+	"bytes"
+	"fmt"
+)
 
 type Text struct {
 	Pattern   []byte
@@ -72,8 +75,21 @@ func (m *Text) Split(other Interface) (common, left, right Interface) {
 			}
 		}
 		if len(commonText) > 0 {
-			return &Text{Pattern: commonText}, &Text{Pattern: m.Pattern[len(commonText):]}, &Text{Pattern: otherText.Pattern[len(commonText):]}
+			common = &Text{Pattern: commonText}
+			remainder := len(m.Pattern) - len(commonText)
+			if remainder > 0 {
+				left = &Text{Pattern: m.Pattern[len(commonText):]}
+			}
+			remainder = len(otherText.Pattern) - len(commonText)
+			if remainder > 0 {
+				right = &Text{Pattern: otherText.Pattern[len(commonText):]}
+			}
+			return
 		}
 	}
 	return nil, m, other
+}
+
+func (m *Text) String() string {
+	return fmt.Sprintf("text %q", m.Pattern)
 }

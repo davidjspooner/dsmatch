@@ -1,4 +1,6 @@
-package match
+package matcher
+
+import "fmt"
 
 type Named struct {
 	Name    string
@@ -23,4 +25,8 @@ func (m *Named) Split(other Interface) (common, left, right Interface) {
 		}
 	}
 	return nil, m, other
+}
+
+func (m *Named) String() string {
+	return fmt.Sprintf("named %q: %s", m.Name, m.Matcher)
 }

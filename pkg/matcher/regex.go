@@ -1,6 +1,7 @@
-package match
+package matcher
 
 import (
+	"fmt"
 	"regexp"
 )
 
@@ -28,4 +29,8 @@ func (m *Regex) Split(other Interface) (common, left, right Interface) {
 		}
 	}
 	return nil, nil, nil
+}
+
+func (m *Regex) String() string {
+	return fmt.Sprintf("regex %q", m.Regexp.String())
 }

@@ -1,4 +1,4 @@
-package match
+package matcher
 
 type EndOfText struct {
 }
@@ -15,4 +15,8 @@ func (m *EndOfText) Split(other Interface) (common, left, right Interface) {
 		return m, nil, nil
 	}
 	return nil, m, other
+}
+
+func (m *EndOfText) String() string {
+	return "end of text"
 }

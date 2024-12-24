@@ -1,4 +1,6 @@
-package match
+package matcher
+
+import "bytes"
 
 type Sequence []Interface
 
@@ -26,4 +28,17 @@ func (m Sequence) Match(text []byte) []Result {
 		results = append(results, interim...)
 	}
 	return results
+}
+
+func (m Sequence) String() string {
+	s := bytes.Buffer{}
+	for n, matcher := range m {
+		if n > 0 {
+			s.WriteString(", ")
+		}
+		s.WriteString("[ ")
+		s.WriteString(matcher.String())
+		s.WriteString(" ]")
+	}
+	return s.String()
 }

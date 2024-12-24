@@ -1,6 +1,9 @@
-package match
+package matcher
 
-import "bytes"
+import (
+	"bytes"
+	"fmt"
+)
 
 // Match any number of elements
 type PathParts struct {
@@ -14,7 +17,7 @@ func (m *PathParts) Match(text []byte) []Result {
 
 	matches = append(matches, Result{Tail: text, Matcher: m})
 	for {
-		if len(matches) >= m.Max {
+		if len(matches) > m.Max {
 			break
 		}
 		slashPos := bytes.IndexByte(text[pos:], m.Seperator)
@@ -22,8 +25,9 @@ func (m *PathParts) Match(text []byte) []Result {
 			matches = append(matches, Result{Fragment: text, Matcher: m})
 			break
 		} else {
-			pos += slashPos + 1
+			pos += slashPos
 			matches = append(matches, Result{Fragment: text[:pos], Tail: text[pos:], Matcher: m})
+			pos += 1
 		}
 	}
 	if len(matches) < m.Min {
@@ -39,4 +43,8 @@ func (m *PathParts) Split(other Interface) (common, left, right Interface) {
 		}
 	}
 	return nil, m, other
+}
+
+func (m *PathParts) String() string {
+	return fmt.Sprintf("path parts %q: %d..%d", m.Seperator, m.Min, m.Max)
 }
