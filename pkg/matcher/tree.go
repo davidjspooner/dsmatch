@@ -2,7 +2,6 @@ package matcher
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 )
 
@@ -50,10 +49,7 @@ func (b *Branch[T]) set(matcher Interface, child *Branch[T]) {
 	b.children[matcher] = child
 }
 func (b *Branch[T]) Add(matcher Interface) (*Branch[T], error) {
-	n := 0
 	for m, child := range b.children {
-		n++
-		fmt.Printf("n: %d, m: %v, matcher: %v\n", n, m, matcher)
 		common, left, right := m.Split(matcher)
 		if common != nil {
 			if left == nil && right == nil {
@@ -99,7 +95,7 @@ func (t *Tree[T]) Empty() bool {
 }
 
 func (t *Tree[T]) FindLeaves(text []byte) []Leaf[T] {
-	baseResult := Result{Fragment: text}
+	baseResult := Result{Tail: text}
 	return t.root.findLeaves(&baseResult, text)
 }
 
