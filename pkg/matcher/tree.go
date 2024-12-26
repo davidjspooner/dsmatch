@@ -90,7 +90,7 @@ type Tree[T any] struct {
 	root *Branch[T]
 }
 
-func (t *Tree[T]) Empty() bool {
+func (t *Tree[T]) IsEmpty() bool {
 	return t.root == nil
 }
 
