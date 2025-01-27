@@ -11,6 +11,9 @@ type Pattern struct {
 }
 
 func (m *Pattern) Match(text []byte) []Result {
+	if len(m.Text) == 0 {
+		return m.matchExact(text)
+	}
 	switch m.Text[0] {
 	case '*':
 		return m.matchAny(m.Text[1:], text)

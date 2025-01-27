@@ -25,11 +25,11 @@ func (b *Branch[T]) findLeaves(baseResult *Result, tail []byte) []Leaf[T] {
 		results := matcher.Match(tail)
 		for _, result := range results {
 			subBaseResult := CombineResults(baseResult, &result)
-			if len(result.Tail) == 0 {
-				leaves = append(leaves, Leaf[T]{Result: subBaseResult, Payload: child.Payload})
-			} else {
-				childLeaves := child.findLeaves(&subBaseResult, result.Tail)
+			childLeaves := child.findLeaves(&subBaseResult, result.Tail)
+			if len(childLeaves) > 0 {
 				leaves = append(leaves, childLeaves...)
+			} else {
+				leaves = append(leaves, Leaf[T]{Result: subBaseResult, Payload: child.Payload})
 			}
 		}
 	}
